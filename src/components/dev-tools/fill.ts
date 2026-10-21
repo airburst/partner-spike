@@ -316,7 +316,7 @@ async function setStep(el: HTMLElement, step: Step): Promise<boolean> {
 				if (o) return o;
 			}
 			return undefined;
-		});
+		}, 8000);
 		if (!hit) return false;
 		press(hit);
 		return true;
@@ -414,7 +414,9 @@ export async function fillForm(
 			if (n >= 3) continue;
 			tries.set(q.name, n + 1);
 			el.scrollIntoView({ block: "center" });
-			if (await setStep(el, step)) {
+			const ok = await setStep(el, step);
+			console.debug("[dev-tools]", pass, q.name, ok ? "set" : "not set", el);
+			if (ok) {
 				set.add(q.name);
 				acted = true;
 				onProgress?.(set.size, steps.length);
