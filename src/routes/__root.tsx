@@ -2,6 +2,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
+import { DevToolsFab } from "#/components/dev-tools/dev-tools-fab";
 import { SiteFooter } from "#/components/site/site-footer";
 import { SiteHeader } from "#/components/site/site-header";
 import appCss from "../styles.css?url";
@@ -40,6 +41,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<SiteHeader />
 				<main className="flex-1">{children}</main>
 				<SiteFooter />
+				{import.meta.env.DEV && <DevToolsFab />}
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",
