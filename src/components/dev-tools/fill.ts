@@ -305,20 +305,18 @@ async function setStep(el: HTMLElement, step: Step): Promise<boolean> {
 		if (!input) return false;
 		typeInto(input, value);
 		const want = norm(answer.pick ?? value);
-		const hit = await waitFor(() =>
-			[
-				...document.querySelectorAll<HTMLElement>(
-					"[role=option], li button, li[role], button, li",
-				),
-			]
-				.filter(usable)
-				.find(
-					(o) =>
-						o !== input &&
-						text(o).split(" ").length < 12 &&
-						text(o).startsWith(want),
-				),
-		);
+		// Most specific first: the option or button, not the <li> wrapping it.
+		const hit = await waitFor(() => {
+			for (const sel of ["[role=option]", "button, [role=button]", "li"]) {
+				const o = [...document.querySelectorAll<HTMLElement>(sel)]
+					.filter(usable)
+					.find(
+						(x) => text(x).split(" ").length < 12 && text(x).startsWith(want),
+					);
+				if (o) return o;
+			}
+			return undefined;
+		});
 		if (!hit) return false;
 		press(hit);
 		return true;
