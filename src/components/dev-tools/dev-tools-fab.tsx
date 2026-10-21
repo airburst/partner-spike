@@ -113,7 +113,7 @@ export function DevToolsFab() {
 							</p>
 							{status.kind === "done" && status.missing.length > 0 && (
 								<p className="mt-1 text-muted-foreground">
-									Not on screen: {status.missing.join(", ")}
+									Not found: {status.missing.join(", ")}
 								</p>
 							)}
 						</output>

@@ -3,7 +3,9 @@
  * and controls, so each question is located by, in order:
  *   1. id / name / data-* equal to the question `name` or `field` (or a slug of them)
  *   2. a <label> / <legend> whose text starts with the question prompt
- * and set with native events, so React (or anything else) sees a real edit.
+ * preferring visible controls, then falling back to hidden but mounted ones (e.g. a
+ * spike that keeps other sections in the DOM). Values are set with native events,
+ * so React (or anything else) sees a real edit.
  */
 import type { Step } from "./plan";
 
@@ -31,12 +33,16 @@ const optionLabel = (label: string) =>
 const text = (el: Element) =>
 	norm((el as HTMLElement).innerText ?? el.textContent ?? "");
 
+/** Hidden fallback in progress: accept controls with no layout box (display:none etc). */
+let includeHidden = false;
+
 function usable(el: Element | null | undefined): el is HTMLElement {
 	if (!(el instanceof HTMLElement)) return false;
 	if (el.closest(`[${DEV_TOOLS_ATTR}]`)) return false;
+	// Always skip aria-hidden mirrors, e.g. Radix's native <select> behind its trigger.
 	if (el.closest('[aria-hidden="true"]') && el.tagName !== "BUTTON")
 		return false;
-	return el.getClientRects().length > 0;
+	return includeHidden || el.getClientRects().length > 0;
 }
 
 const CONTROL =
@@ -386,7 +392,7 @@ function labelFor(q: Step["question"], value: string): string {
 }
 
 /**
- * Fill every plan step currently on screen. Repeats while the form changes, since
+ * Fill every plan step in the DOM (visible first, then hidden). Repeats while the form changes, since
  * answers reveal (or re-ask) questions; stops when a pass changes nothing.
  */
 export async function fillForm(
@@ -404,18 +410,36 @@ export async function fillForm(
 			const key = q.prompt ? norm(q.prompt) : "";
 			const nth = promptSeen.get(key) ?? 0;
 			promptSeen.set(key, nth + 1);
-			const el = byId(q) ?? byLabel(q, nth);
-			if (!el) continue;
-			if (shows(el, step)) {
-				set.add(q.name);
+			let el = byId(q) ?? byLabel(q, nth);
+			includeHidden = !el;
+			el ??= byId(q) ?? byLabel(q, nth);
+			if (!el) {
+				includeHidden = false;
 				continue;
 			}
-			const n = tries.get(q.name) ?? 0;
-			if (n >= 3) continue;
-			tries.set(q.name, n + 1);
-			el.scrollIntoView({ block: "center" });
-			const ok = await setStep(el, step);
-			console.debug("[dev-tools]", pass, q.name, ok ? "set" : "not set", el);
+			const hidden = includeHidden;
+			let ok: boolean | undefined;
+			try {
+				if (shows(el, step)) {
+					set.add(q.name);
+					continue;
+				}
+				const n = tries.get(q.name) ?? 0;
+				if (n >= 3) continue;
+				tries.set(q.name, n + 1);
+				if (!hidden) el.scrollIntoView({ block: "center" });
+				ok = await setStep(el, step);
+			} finally {
+				includeHidden = false;
+			}
+			console.debug(
+				"[dev-tools]",
+				pass,
+				q.name,
+				ok ? "set" : "not set",
+				hidden ? "(hidden)" : "",
+				el,
+			);
 			if (ok) {
 				set.add(q.name);
 				acted = true;
