@@ -1,2 +1,2 @@
 [install.scopes]
-"@simplybusiness" = { url = "https://bnw-registry.simplybusiness.io/repository/sb-npm/", token = "$NPM_TOKEN" }
+"@simplybusiness" = "https://bnw-registry.simplybusiness.io/repository/sb-npm/"
