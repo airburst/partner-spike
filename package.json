@@ -15,7 +15,7 @@
     "check": "biome check"
   },
   "dependencies": {
-    "@simplybusiness/sdk-core": "^0.1.0",
+    "@simplybusiness/sdk-core": "^0.3.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "0.10.13",
     "@tanstack/react-router": "1.170.45",
