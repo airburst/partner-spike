@@ -5,7 +5,7 @@
     "": {
       "name": "broker-site",
       "dependencies": {
-        "@simplybusiness/sdk-core": "^0.3.0",
+        "@simplybusiness/sdk-core": "^0.4.1",
         "@tailwindcss/vite": "^4.1.18",
         "@tanstack/react-devtools": "0.10.13",
         "@tanstack/react-router": "1.170.45",
@@ -319,7 +319,7 @@
 
     "@rolldown/pluginutils": ["@rolldown/pluginutils@1.0.1", "", {}, "sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw=="],
 
-    "@simplybusiness/sdk-core": ["@simplybusiness/sdk-core@0.3.0", "https://bnw-registry.simplybusiness.io/repository/sb-npm/@simplybusiness/sdk-core/-/sdk-core-0.3.0.tgz", {}, "sha512-0XsKlWckvQrHCQMP2ZXHt42TP1E4X+c1gSsCB/SusagiApVwP+0og0viIT2bTqGhIht0T+KQ8DvsNVFffHqD0Q=="],
+    "@simplybusiness/sdk-core": ["@simplybusiness/sdk-core@0.4.1", "https://bnw-registry.simplybusiness.io/repository/sb-npm/@simplybusiness/sdk-core/-/sdk-core-0.4.1.tgz", {}, "sha512-1OmZeAoeVZ/tZhI++FzpSDvVaq3AGb0omJq7gT37TbF7etmjZFX7M4EaPJW8t6yT7cA71q9ocEhxIQ2S9yvelQ=="],
 
     "@solid-primitives/event-listener": ["@solid-primitives/event-listener@2.4.6", "", { "dependencies": { "@solid-primitives/utils": "^6.4.1" }, "peerDependencies": { "solid-js": "^1.6.12" } }, "sha512-5I0YJcTVYIWoMmgBSROBZGcz+ymhew/pGTg2dHW74BUjFKsV8Li4bOZYl0YAGP4mHw5o4UBd9/BEesqBci3wxw=="],
 
