@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as QuoteIndexRouteImport } from './routes/quote/index'
+import { Route as QuoteVerticalRouteImport } from './routes/quote/$vertical'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuoteIndexRoute = QuoteIndexRouteImport.update({
+  id: '/quote/',
+  path: '/quote/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuoteVerticalRoute = QuoteVerticalRouteImport.update({
+  id: '/quote/$vertical',
+  path: '/quote/$vertical',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/quote/$vertical': typeof QuoteVerticalRoute
+  '/quote/': typeof QuoteIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/quote/$vertical': typeof QuoteVerticalRoute
+  '/quote': typeof QuoteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/quote/$vertical': typeof QuoteVerticalRoute
+  '/quote/': typeof QuoteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/quote/$vertical' | '/quote/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/quote/$vertical' | '/quote'
+  id: '__root__' | '/' | '/quote/$vertical' | '/quote/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  QuoteVerticalRoute: typeof QuoteVerticalRoute
+  QuoteIndexRoute: typeof QuoteIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quote/': {
+      id: '/quote/'
+      path: '/quote'
+      fullPath: '/quote/'
+      preLoaderRoute: typeof QuoteIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quote/$vertical': {
+      id: '/quote/$vertical'
+      path: '/quote/$vertical'
+      fullPath: '/quote/$vertical'
+      preLoaderRoute: typeof QuoteVerticalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  QuoteVerticalRoute: QuoteVerticalRoute,
+  QuoteIndexRoute: QuoteIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

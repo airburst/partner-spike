@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	BadgeCheck,
 	Briefcase,
@@ -10,6 +10,7 @@ import {
 	Store,
 	Users,
 } from "lucide-react";
+import { ProductTiles } from "#/components/quote/product-tiles";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import {
@@ -101,7 +102,7 @@ function Hero() {
 					</p>
 					<div className="mt-8 flex flex-wrap gap-3">
 						<Button size="lg" variant="secondary" asChild>
-							<a href="#quote">Get a quote</a>
+							<Link to="/quote">Get a quote</Link>
 						</Button>
 						<Button
 							size="lg"
@@ -187,13 +188,9 @@ function QuoteSlot() {
 			<p className="mt-2 text-muted-foreground">
 				Choose a product to start your quote.
 			</p>
-			<Card className="mt-8 border-dashed">
-				{/* Host slot: embedded quote journey mounts here */}
-				<CardContent
-					id="quote-app"
-					className="py-16 text-center text-muted-foreground"
-				>
-					Quote journey coming soon.
+			<Card className="mt-8">
+				<CardContent id="quote-app" className="py-8">
+					<ProductTiles />
 				</CardContent>
 			</Card>
 		</section>

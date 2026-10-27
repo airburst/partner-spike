@@ -62,3 +62,17 @@
     @apply bg-background text-foreground antialiased;
   }
 }
+
+/* Route changes: fast cross-fade (router `defaultViewTransition`). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 120ms;
+  animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

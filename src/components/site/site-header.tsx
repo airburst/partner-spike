@@ -3,11 +3,11 @@ import { ShieldCheck } from "lucide-react";
 import { Button } from "#/components/ui/button";
 
 const NAV = [
-	{ href: "#products", label: "Insurance" },
-	{ href: "#why-us", label: "Why us" },
-	{ href: "#quote", label: "Get a quote" },
-	{ href: "#contact", label: "Contact" },
-];
+	{ to: "/", hash: "products", label: "Insurance" },
+	{ to: "/", hash: "why-us", label: "Why us" },
+	{ to: "/quote", label: "Get a quote" },
+	{ to: "/", hash: "contact", label: "Contact" },
+] as const;
 
 export function SiteHeader() {
 	return (
@@ -22,13 +22,14 @@ export function SiteHeader() {
 				</Link>
 				<nav className="hidden gap-6 text-sm md:flex">
 					{NAV.map((item) => (
-						<a
-							key={item.href}
-							href={item.href}
+						<Link
+							key={item.label}
+							to={item.to}
+							hash={"hash" in item ? item.hash : undefined}
 							className="text-muted-foreground hover:text-foreground"
 						>
 							{item.label}
-						</a>
+						</Link>
 					))}
 				</nav>
 				<div className="flex items-center gap-2">
@@ -36,7 +37,7 @@ export function SiteHeader() {
 						Sign in
 					</Button>
 					<Button size="sm" asChild>
-						<a href="#quote">Get a quote</a>
+						<Link to="/quote">Get a quote</Link>
 					</Button>
 				</div>
 			</div>
